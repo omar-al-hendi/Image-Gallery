@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-import BlurImage from "../components/BlurImage";
-import type { Image } from "../components/BlurImage";
+import Head from "next/head";
 // import { generateUsers } from "../seeds";
+import { NextPage } from "next";
+import Gallery from "../components/Gallery";
+import type { Image } from "../components/BlurImage";
+import { createClient } from "@supabase/supabase-js";
 
 export async function getStaticProps() {
   const supabaseAdmin = createClient(
@@ -19,17 +20,16 @@ export async function getStaticProps() {
   };
 }
 
-export default function Gallery({ images }: { images: Image[] }) {
+const index: NextPage<{ images: Image[] }> = ({ images }) => {
   return (
-    <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:0x-8">
-      <h1 className="m-auto w-fit border-b-2 border-sky-500 text-5xl font-mono text-center mb-12 p-7 text-black font-black">
-        Next JS Image Gallery
-      </h1>
-      <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        {images.map((image) => (
-          <BlurImage key={image.id} image={image} />
-        ))}
-      </div>
-    </div>
+    <>
+      <Head>
+        <title>Image Gallery </title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Gallery images={images} />
+    </>
   );
-}
+};
+
+export default index;
